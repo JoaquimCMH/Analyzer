@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -29,46 +29,42 @@ public class CategorizerResource {
 	}
 	
     //http://localhost:8080/AppWS/webapi/categorizer/label
-    @POST
-    @Path("/label")
-    @Consumes(MediaType.TEXT_PLAIN)
+    @GET
+    @Path("/label/{question}")
     @Produces(MediaType.TEXT_PLAIN)
-    public String getLabel(String question) {
+    public String getLabel(@PathParam("question") String question) {
     	return controller.getLabel(question);
     }
     
-    @POST
-    @Path("/similarities")
-    @Consumes(MediaType.TEXT_PLAIN)
+    @GET
+    @Path("/similarities/{question}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getSimilarities(String question) {
+    public String getSimilarities(@PathParam("question") String question) {
     	Map<String, Double> similarities = controller.getSimilarities(question);
     	Gson gson = new Gson();
     	return gson.toJson(similarities);
     }
     
-    @POST
-    @Path("/vectorModel")
-    @Consumes(MediaType.TEXT_PLAIN)
+    @GET
+    @Path("/vectorModel/{question}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Vector getVectorModelRepresentation(String question) {
+    public Vector getVectorModelRepresentation(@PathParam("question") String question) {
     	return controller.getVectorModelRepresentation(question);
     }
     
-    @POST
-    @Path("/punctuationParticle")
-    @Consumes(MediaType.TEXT_PLAIN)
+    @GET
+    @Path("/punctuationParticle/{question}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getPunctuationParticle(String question) {
+    public String getPunctuationParticle(@PathParam("question") String question) {
     	Set<String> punctuationParticle = controller.getPunctuationParticle(question);
     	Gson gson = new Gson();
     	return gson.toJson(punctuationParticle);
     }
     
-    @POST
-    @Consumes(MediaType.TEXT_PLAIN)
+    @GET
+    @Path("{question}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getAllInOne(String question) {
+    public String getAllInOne(@PathParam("question") String question) {
     	List<Object> all = new ArrayList<Object>();
     	all.add(controller.getSimilarities(question));
     	all.add(controller.getVectorModelRepresentation(question));
